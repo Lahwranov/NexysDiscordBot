@@ -5,6 +5,7 @@ from discord.ext import commands # Extends discord.py and allows creation and ha
 from discord import app_commands # Allows parameters to be used for slash-commands
 from dotenv import load_dotenv # Allows the use of environment variables (this is what we'll use to manage our
                                # tokens and keys)
+from keep_alive import keep_alive
 
 # Environment variables for tokens and other sensitive data
 load_dotenv() # Loads and reads the .env file
