@@ -1,2 +1,3 @@
 # NexysDiscordBot
-Un bot discord Français et cool !
+
+Un incroyable bot discord où VOUS choisissez les features !
