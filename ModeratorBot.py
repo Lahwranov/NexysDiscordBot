@@ -5,6 +5,8 @@ import os
 from dotenv import load_dotenv
 import asyncio  # Import asyncio pour le mute temporaire
 
+from keep_alive import keep_alive
+
 # --- Configuration ---
 load_dotenv()  # Charge les variables d'environnement depuis .env
 TOKEN = os.getenv('DISCORD_TOKEN')
