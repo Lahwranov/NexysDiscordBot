@@ -5,8 +5,6 @@ import os
 from dotenv import load_dotenv
 import asyncio  # Import asyncio pour le mute temporaire
 
-from keep_alive import keep_alive
-
 # --- Configuration ---
 load_dotenv()  # Charge les variables d'environnement depuis .env
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -31,6 +29,30 @@ async def on_ready():
         print(f'ID du bot : {bot.user.id}')
     except Exception as e:
         print(f'Erreur lors de la synchronisation des commandes : {e}')
+@bot.event
+async def on_ready():
+    """S'exécute lorsque le bot est connecté et prêt."""
+    print(f'{bot.user.name} est connecté et prêt !')
+    print(f'ID du bot : {bot.user.id}')
+    try:
+        # Synchronise les commandes slash (si tu en as)
+        synced = await bot.tree.sync()
+        print(f"Synchronisé {len(synced)} commande(s) slash.")
+    except Exception as e:
+        print(f"Erreur lors de la synchronisation des commandes slash : {e}")
+
+# --- Commandes Slash ---
+@bot.tree.command(name="say", description="Fait dire quelque chose au bot.")
+@app_commands.describe(message="Le message que le bot doit dire.")
+async def say_command(interaction: discord.Interaction, message: str):
+    """Commande slash pour faire dire un message au bot."""
+    try:
+        await interaction.response.send_message("Message envoyé !", ephemeral=True)  # Réponse éphémère à l'utilisateur
+        await interaction.channel.send(message)  # Le bot envoie le message dans le canal
+    except discord.errors.Forbidden:
+        await interaction.followup.send("Je n'ai pas la permission d'envoyer des messages dans ce canal.", ephemeral=True)
+    except Exception as e:
+        await interaction.followup.send(f"Une erreur s'est produite : {e}", ephemeral=True)
 
 # --- Commandes de Modération ---
 
@@ -165,4 +187,3 @@ async def on_ready():
 
 # Run the bot
 bot.run(TOKEN) # This code uses your bot's token to run the bot
-
